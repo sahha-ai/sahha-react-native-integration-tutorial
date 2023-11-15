@@ -1,17 +1,38 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Text, View } from 'react-native';
 import globalStyles from '../global-styles';
-import Sahha from 'sahha-react-native';
+import Sahha, { SahhaSensorStatus } from 'sahha-react-native';
 
 const appId = '';
 const appSecret = '';
 const externalId = 'test-external-id';
+
+const sensorStatusToString = (status: SahhaSensorStatus) => {
+  switch (status) {
+    case SahhaSensorStatus.pending:
+      return 'Pending';
+    case SahhaSensorStatus.disabled:
+      return 'Disabled';
+    case SahhaSensorStatus.enabled:
+      return 'Enabled';
+    default:
+      return 'Unavailable';
+  }
+};
 
 function Index(): JSX.Element {
   const [authentication, setAuthentication] = useState({
     loading: false,
     authenticated: false,
   });
+  const [sensorStatus, setSensorStatus] = useState({
+    loading: true,
+    status: SahhaSensorStatus.pending,
+  });
+
+  useEffect(() => {
+    getSahhaSensorStatus();
+  }, []);
 
   const authenticateSahha = () => {
     setAuthentication({ ...authentication, loading: true });
@@ -69,6 +90,32 @@ function Index(): JSX.Element {
     });
   };
 
+  const getSahhaSensorStatus = () => {
+    setSensorStatus({ ...sensorStatus, loading: true });
+
+    Sahha.getSensorStatus((error, status) => {
+      console.log(`Sahha get sensor status success: ${!error}`);
+      setSensorStatus({ loading: false, status });
+
+      if (error) {
+        console.log(`Sahha get sensor status error: ${error}`);
+      }
+    });
+  };
+
+  const enableSahhaSensors = () => {
+    setSensorStatus({ ...sensorStatus, loading: true });
+
+    Sahha.enableSensors((error, status) => {
+      console.log(`Sahha enable sensors success: ${!error}`);
+      setSensorStatus({ loading: false, status });
+
+      if (error) {
+        console.log(`Sahha enable sensors error: ${error}`);
+      }
+    });
+  };
+
   return (
     <View style={[globalStyles.container, { gap: 24 }]}>
       <View style={{ gap: 12 }}>
@@ -101,6 +148,34 @@ function Index(): JSX.Element {
           onPress={getSahhaDemographic}
           disabled={!authentication.authenticated}
         />
+      </View>
+
+      <View style={{ gap: 12 }}>
+        <Text>
+          {sensorStatus.loading
+            ? 'Getting sensor status...'
+            : `Sensor status: ${sensorStatusToString(sensorStatus.status)}`}
+        </Text>
+
+        {sensorStatus.status === SahhaSensorStatus.unavailable && (
+          <Text>Sensors are unavailable on this device</Text>
+        )}
+
+        <Button
+          title="Enable sensors"
+          onPress={enableSahhaSensors}
+          disabled={
+            sensorStatus.loading ||
+            sensorStatus.status !== SahhaSensorStatus.pending
+          }
+        />
+
+        {sensorStatus.status === SahhaSensorStatus.disabled && (
+          <Button
+            title="Open app settings"
+            onPress={() => Sahha.openAppSettings()}
+          />
+        )}
       </View>
     </View>
   );
