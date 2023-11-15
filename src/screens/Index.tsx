@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, ScrollView, Text, View } from 'react-native';
 import globalStyles from '../global-styles';
 import Sahha from 'sahha-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const appId = '';
 const appSecret = '';
@@ -40,25 +41,29 @@ function Index(): JSX.Element {
   };
 
   return (
-    <View style={globalStyles.container}>
-      <View style={{ gap: 12 }}>
-        <Text>
-          {authentication.loading
-            ? 'Authenticating...'
-            : `Authenticated: ${authentication.authenticated}`}
-        </Text>
-        <Button
-          title="Authenticate Sahha"
-          onPress={authenticateSahha}
-          disabled={authentication.loading}
-        />
-        <Button
-          title="Deauthenticate Sahha"
-          onPress={deauthenticateSahha}
-          disabled={authentication.loading}
-        />
-      </View>
-    </View>
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={globalStyles.scrollContainer}>
+        <View style={{ gap: 12 }}>
+          <Text>
+            {authentication.loading
+              ? 'Authenticating...'
+              : `Authenticated: ${authentication.authenticated}`}
+          </Text>
+          <Button
+            title="Authenticate Sahha"
+            onPress={authenticateSahha}
+            disabled={authentication.loading}
+          />
+          <Button
+            title="Deauthenticate Sahha"
+            onPress={deauthenticateSahha}
+            disabled={authentication.loading}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
