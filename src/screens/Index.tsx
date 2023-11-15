@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, ScrollView, Text, View } from 'react-native';
 import globalStyles from '../global-styles';
 import Sahha from 'sahha-react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const appId = '';
 const appSecret = '';
@@ -70,39 +71,43 @@ function Index(): JSX.Element {
   };
 
   return (
-    <View style={[globalStyles.container, { gap: 24 }]}>
-      <View style={{ gap: 12 }}>
-        <Text>
-          {authentication.loading
-            ? 'Authenticating...'
-            : `Authenticated: ${authentication.authenticated}`}
-        </Text>
-        <Button
-          title="Authenticate Sahha"
-          onPress={authenticateSahha}
-          disabled={authentication.loading}
-        />
-        <Button
-          title="Deauthenticate Sahha"
-          onPress={deauthenticateSahha}
-          disabled={authentication.loading}
-        />
-      </View>
+    <SafeAreaView>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={globalStyles.scrollContainer}>
+        <View style={{ gap: 12 }}>
+          <Text>
+            {authentication.loading
+              ? 'Authenticating...'
+              : `Authenticated: ${authentication.authenticated}`}
+          </Text>
+          <Button
+            title="Authenticate Sahha"
+            onPress={authenticateSahha}
+            disabled={authentication.loading}
+          />
+          <Button
+            title="Deauthenticate Sahha"
+            onPress={deauthenticateSahha}
+            disabled={authentication.loading}
+          />
+        </View>
 
-      <View style={{ gap: 12 }}>
-        <Text>Demographic</Text>
-        <Button
-          title="Post demographic"
-          onPress={postSahhaDemographic}
-          disabled={!authentication.authenticated}
-        />
-        <Button
-          title="Get demographic"
-          onPress={getSahhaDemographic}
-          disabled={!authentication.authenticated}
-        />
-      </View>
-    </View>
+        <View style={{ gap: 12 }}>
+          <Text>Demographic</Text>
+          <Button
+            title="Post demographic"
+            onPress={postSahhaDemographic}
+            disabled={!authentication.authenticated}
+          />
+          <Button
+            title="Get demographic"
+            onPress={getSahhaDemographic}
+            disabled={!authentication.authenticated}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 

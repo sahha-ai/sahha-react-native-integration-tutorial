@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -27,15 +27,20 @@ const sahhaSettings = {
 };
 
 function App(): JSX.Element {
+  const [sahhaConfigured, setSahhaConfigured] = useState(false);
+
   useEffect(() => {
     Sahha.configure(sahhaSettings, (error, success) => {
       console.log(`Sahha configuration success: ${success}`);
+      setSahhaConfigured(success);
 
       if (error) {
         console.log(`Sahha configuration error: ${error}`);
       }
     });
   }, []);
+
+  if (!sahhaConfigured) return <></>;
 
   return (
     <NavigationContainer>
