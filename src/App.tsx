@@ -7,6 +7,7 @@ import {
 } from '@react-navigation/native-stack';
 import Index from './screens/Index';
 import Sahha, { SahhaEnvironment, SahhaSensor } from 'sahha-react-native';
+import Analyze from './screens/Analyze';
 
 const Stack = createNativeStackNavigator();
 
@@ -46,6 +47,7 @@ function App(): JSX.Element {
           component={Index}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="Analyze" component={Analyze} />
       </Stack.Navigator>
     </NavigationContainer>
   );

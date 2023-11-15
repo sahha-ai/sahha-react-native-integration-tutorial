@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Text, View } from 'react-native';
+import { Button, ScrollView, Text, View } from 'react-native';
 import globalStyles from '../global-styles';
 import Sahha, { SahhaSensorStatus } from 'sahha-react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const appId = '';
 const appSecret = '';
@@ -20,7 +22,7 @@ const sensorStatusToString = (status: SahhaSensorStatus) => {
   }
 };
 
-function Index(): JSX.Element {
+function Index({ navigation }: NativeStackScreenProps<any>): JSX.Element {
   const [authentication, setAuthentication] = useState({
     loading: false,
     authenticated: false,
@@ -117,67 +119,80 @@ function Index(): JSX.Element {
   };
 
   return (
-    <View style={[globalStyles.container, { gap: 24 }]}>
-      <View style={{ gap: 12 }}>
-        <Text>
-          {authentication.loading
-            ? 'Authenticating...'
-            : `Authenticated: ${authentication.authenticated}`}
-        </Text>
-        <Button
-          title="Authenticate Sahha"
-          onPress={authenticateSahha}
-          disabled={authentication.loading}
-        />
-        <Button
-          title="Deauthenticate Sahha"
-          onPress={deauthenticateSahha}
-          disabled={authentication.loading}
-        />
-      </View>
-
-      <View style={{ gap: 12 }}>
-        <Text>Demographic</Text>
-        <Button
-          title="Post demographic"
-          onPress={postSahhaDemographic}
-          disabled={!authentication.authenticated}
-        />
-        <Button
-          title="Get demographic"
-          onPress={getSahhaDemographic}
-          disabled={!authentication.authenticated}
-        />
-      </View>
-
-      <View style={{ gap: 12 }}>
-        <Text>
-          {sensorStatus.loading
-            ? 'Getting sensor status...'
-            : `Sensor status: ${sensorStatusToString(sensorStatus.status)}`}
-        </Text>
-
-        {sensorStatus.status === SahhaSensorStatus.unavailable && (
-          <Text>Sensors are unavailable on this device</Text>
-        )}
-
-        <Button
-          title="Enable sensors"
-          onPress={enableSahhaSensors}
-          disabled={
-            sensorStatus.loading ||
-            sensorStatus.status !== SahhaSensorStatus.pending
-          }
-        />
-
-        {sensorStatus.status === SahhaSensorStatus.disabled && (
+    <SafeAreaView style={{ flex: 1 }}>
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={globalStyles.scrollContainer}>
+        <View style={{ gap: 12 }}>
+          <Text>
+            {authentication.loading
+              ? 'Authenticating...'
+              : `Authenticated: ${authentication.authenticated}`}
+          </Text>
           <Button
-            title="Open app settings"
-            onPress={() => Sahha.openAppSettings()}
+            title="Authenticate Sahha"
+            onPress={authenticateSahha}
+            disabled={authentication.loading}
           />
-        )}
-      </View>
-    </View>
+          <Button
+            title="Deauthenticate Sahha"
+            onPress={deauthenticateSahha}
+            disabled={authentication.loading}
+          />
+        </View>
+
+        <View style={{ gap: 12 }}>
+          <Text>Demographic</Text>
+          <Button
+            title="Post demographic"
+            onPress={postSahhaDemographic}
+            disabled={!authentication.authenticated}
+          />
+          <Button
+            title="Get demographic"
+            onPress={getSahhaDemographic}
+            disabled={!authentication.authenticated}
+          />
+        </View>
+
+        <View style={{ gap: 12 }}>
+          <Text>
+            {sensorStatus.loading
+              ? 'Getting sensor status...'
+              : `Sensor status: ${sensorStatusToString(sensorStatus.status)}`}
+          </Text>
+
+          {sensorStatus.status === SahhaSensorStatus.unavailable && (
+            <Text>Sensors are unavailable on this device</Text>
+          )}
+
+          <Button
+            title="Enable sensors"
+            onPress={enableSahhaSensors}
+            disabled={
+              sensorStatus.loading ||
+              sensorStatus.status !== SahhaSensorStatus.pending
+            }
+          />
+
+          {sensorStatus.status === SahhaSensorStatus.disabled && (
+            <Button
+              title="Open app settings"
+              onPress={() => Sahha.openAppSettings()}
+            />
+          )}
+        </View>
+
+        <View style={{ gap: 12 }}>
+          <Text>Scores & insights</Text>
+          <Button
+            title="Analyze"
+            onPress={() => navigation.navigate('Analyze')}
+            disabled={!authentication.authenticated}
+          />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
