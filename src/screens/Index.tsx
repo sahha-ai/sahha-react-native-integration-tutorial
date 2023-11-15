@@ -39,8 +39,38 @@ function Index(): JSX.Element {
     });
   };
 
+  const postSahhaDemographic = () => {
+    const demographic = {
+      age: 35, // number
+      gender: 'Female', // string, "Male", "Female", "Gender Diverse",
+      country: 'NZ', // ISO 2 digit code, i.e. "US", "UK", "AU", etc.
+      birthCountry: 'UK', // ISO 2 digit code, i.e. "US", "UK", "AU", etc.
+      birthDate: '1990-05-20', // must be in format "YYYY-MM-DD", i.e. "1990-05-20"
+    };
+
+    Sahha.postDemographic(demographic, (error, success) => {
+      console.log(`Sahha post demographic success: ${success}`);
+
+      if (error) {
+        console.log(`Sahha post demographic error: ${error}`);
+      }
+    });
+  };
+
+  const getSahhaDemographic = () => {
+    Sahha.getDemographic((error, value) => {
+      console.log(`Sahha get demographic success: ${!error}`);
+
+      if (error) {
+        console.log(`Sahha get demographic error: ${error}`);
+      } else if (value) {
+        console.log(value);
+      }
+    });
+  };
+
   return (
-    <View style={globalStyles.container}>
+    <View style={[globalStyles.container, { gap: 24 }]}>
       <View style={{ gap: 12 }}>
         <Text>
           {authentication.loading
@@ -56,6 +86,20 @@ function Index(): JSX.Element {
           title="Deauthenticate Sahha"
           onPress={deauthenticateSahha}
           disabled={authentication.loading}
+        />
+      </View>
+
+      <View style={{ gap: 12 }}>
+        <Text>Demographic</Text>
+        <Button
+          title="Post demographic"
+          onPress={postSahhaDemographic}
+          disabled={!authentication.authenticated}
+        />
+        <Button
+          title="Get demographic"
+          onPress={getSahhaDemographic}
+          disabled={!authentication.authenticated}
         />
       </View>
     </View>
