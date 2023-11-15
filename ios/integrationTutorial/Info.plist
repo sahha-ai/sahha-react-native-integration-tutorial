@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSMotionUsageDescription</key>
-  <string>Motion permission is required for this application to work correctly.</string>
 	<key>NSHealthShareUsageDescription</key>
 	<string>Your workout data is used to suggest new workout plans and exercises.</string>
 	<key>CFBundleDevelopmentRegion</key>
