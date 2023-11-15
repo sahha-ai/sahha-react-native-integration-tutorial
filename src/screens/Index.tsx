@@ -71,7 +71,7 @@ function Index(): JSX.Element {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <ScrollView
         style={{ flex: 1 }}
         contentContainerStyle={globalStyles.scrollContainer}>
