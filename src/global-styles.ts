@@ -1,10 +1,10 @@
 import { StyleSheet } from 'react-native';
 
 const globalStyles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  scrollContainer: {
+    flexGrow: 1,
+    gap: 24,
+    padding: 24,
   },
 });
 
