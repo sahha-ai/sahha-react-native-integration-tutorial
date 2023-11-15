@@ -3,8 +3,8 @@ import { Button, Text, View } from 'react-native';
 import globalStyles from '../global-styles';
 import Sahha, { SahhaSensorStatus } from 'sahha-react-native';
 
-const appId = '';
-const appSecret = '';
+const appId = 'GNKCTUWEN9HIALTQW02CYB7WO7LUKEDQ';
+const appSecret = 'kzGjlfN9ORuUPNAdTuDlczE2s0wmG3XLwxqcciH0H60=';
 const externalId = 'test-external-id';
 
 const sensorStatusToString = (status: SahhaSensorStatus) => {
