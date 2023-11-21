@@ -4,8 +4,8 @@ import globalStyles from '../global-styles';
 import Sahha from 'sahha-react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-const appId = '';
-const appSecret = '';
+const appId = 'GNKCTUWEN9HIALTQW02CYB7WO7LUKEDQ';
+const appSecret = 'kzGjlfN9ORuUPNAdTuDlczE2s0wmG3XLwxqcciH0H60=';
 const externalId = 'test-external-id';
 
 function Index(): JSX.Element {
@@ -13,6 +13,7 @@ function Index(): JSX.Element {
     loading: false,
     authenticated: false,
   });
+  const [demographic, setDemographic] = useState<Object | null>(null);
 
   const authenticateSahha = () => {
     setAuthentication({ ...authentication, loading: true });
@@ -64,9 +65,9 @@ function Index(): JSX.Element {
 
       if (error) {
         console.log(`Sahha get demographic error: ${error}`);
-      } else if (value) {
-        console.log(value);
       }
+
+      setDemographic(JSON.parse(value.toString()));
     });
   };
 
@@ -105,6 +106,7 @@ function Index(): JSX.Element {
             onPress={getSahhaDemographic}
             disabled={!authentication.authenticated}
           />
+          {demographic && <Text>{JSON.stringify(demographic, null, 2)}</Text>}
         </View>
       </ScrollView>
     </SafeAreaView>
